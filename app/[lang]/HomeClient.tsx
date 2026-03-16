@@ -212,7 +212,7 @@ className="border border-neutral-600 px-7 py-3 uppercase text-sm hover:border-wh
 
 {services.map((service,index)=>(
 
-<Link href={`/${currentLang}/services`} key={service}>
+<Link href={`/${currentLang}/about`} key={service}>
 
 <motion.div
 initial={{opacity:0,y:40}}
