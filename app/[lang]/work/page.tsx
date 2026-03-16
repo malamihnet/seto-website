@@ -22,6 +22,6 @@ params
 params:{lang:string}
 }){
 
-return <WorkClient lang={params.lang} />
+return <WorkClient />
 
 }

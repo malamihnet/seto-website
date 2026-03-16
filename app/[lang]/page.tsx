@@ -10,7 +10,7 @@ type PageProps = {
 }
 
 export default function Page({ params }: PageProps) {
-  return <HomeClient lang={params.lang} />
+return <HomeClient />
 }
 
 export async function generateMetadata({ params }: PageProps) {

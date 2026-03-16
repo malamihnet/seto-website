@@ -20,5 +20,5 @@ type PageProps = {
 }
 
 export default function Page({ params }: PageProps) {
-  return <ContactClient lang={params.lang} />
+  return <ContactClient />
 }
