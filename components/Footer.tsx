@@ -42,7 +42,7 @@ work:"الأعمال",
 about:"من نحن",
 contactPage:"اتصل بنا",
 location:"بغداد – اليرموك، العراق",
-powered:"تشغيل وتطوير"
+powered:"مدعوم مــن  "
 }
 
 }[lang]

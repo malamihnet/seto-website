@@ -3,9 +3,11 @@ import { Special_Gothic_Expanded_One, Alexandria } from "next/font/google"
 import Preloader from "@/components/Preloader"
 
 const special = Special_Gothic_Expanded_One({
-  subsets:["latin"],
-  weight:"400",
-  variable:"--font-en"
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-en",
+  display: "block", // هذا سيمنع المتصفح من محاولة تبديل الخط بخط احتياطي
+  adjustFontFallback: false,
 })
 
 const alexandria = Alexandria({
