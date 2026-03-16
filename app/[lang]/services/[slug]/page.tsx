@@ -1,17 +1,17 @@
 import ServiceClient from "./ServiceClient"
 
 type Params = {
-  lang: string
-  slug: string
+  lang?: string
+  slug?: string
 }
 
 export async function generateMetadata({
   params
 }:{
-  params: Promise<Params>
+  params: Params
 }){
 
-const { slug } = await params
+const slug = params?.slug ?? "service"
 
 const title = slug
 .split("-")
@@ -20,18 +20,19 @@ const title = slug
 
 return {
 title: `${title} | Seto's Post Production`,
-description: `Professional ${title} services by Seto's Post Production, Iraq's leading cinematic post production studio.`
+description: `Professional ${title} services by Seto's Post Production studio in Iraq.`
 }
 
 }
 
-export default async function Page({
+export default function Page({
 params
 }:{
-params: Promise<Params>
+params: Params
 }){
 
-const { slug, lang } = await params
+const slug = params?.slug ?? "service"
+const lang = params?.lang ?? "en"
 
 return <ServiceClient slug={slug} lang={lang} />
 
