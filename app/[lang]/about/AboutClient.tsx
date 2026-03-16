@@ -18,11 +18,14 @@ FaPenNib,
 FaRocket
 } from "react-icons/fa"
 
-export default function AboutClient(){
+export default function AboutClient({
+lang
+}:{
+lang?:string
+}){
 
-const { lang } = useParams<{ lang: string }>()
-
-const isArabic = lang === "ar"
+const safeLang = lang ?? "en"
+const isArabic = safeLang === "ar"
 
 const services = [
 {title:isArabic?"مونتاج الفيديو":"Video Editing",slug:"video-editing",icon:FaFilm},
@@ -94,7 +97,7 @@ const Icon = service.icon
 
 return(
 
-<Link key={service.slug} href={`/${lang}/services/${service.slug}`}>
+<Link key={service.slug} href={`/${safeLang}/services/${service.slug}`}>
 
 <motion.div
 initial={{opacity:0,y:20}}
@@ -146,7 +149,7 @@ className="relative border border-neutral-800 hover:border-[#e4da20] p-7 transit
 </p>
 
 <Link
-href={`/${lang}/contact`}
+href={`/${safeLang}/contact`}
 className="inline-block border border-[#e4da20] px-12 py-5 text-[#e4da20] uppercase hover:bg-[#e4da20] hover:text-black transition shadow-[0_0_40px_rgba(228,218,32,0.25)]"
 >
 
