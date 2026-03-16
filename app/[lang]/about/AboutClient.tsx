@@ -18,9 +18,10 @@ FaPenNib,
 FaRocket
 } from "react-icons/fa"
 
-export default function AboutClient()
+export default function AboutClient(){
 
 const { lang } = useParams<{ lang: string }>()
+
 const safeLang = lang || "en"
 const isArabic = safeLang === "ar"
 
