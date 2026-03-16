@@ -48,5 +48,5 @@ type PageProps = {
 }
 
 export default function Page({ params }: PageProps) {
-  return <AboutClient lang={params.lang} />
+return <AboutClient />
 }
