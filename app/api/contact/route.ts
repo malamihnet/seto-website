@@ -6,12 +6,17 @@ export async function POST(req: Request){
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      port: 587, // غيرنا البورت لـ 587 المسموح عالمياً
+      secure: false, // لازم تصير false مع بورت 587
+      requireTLS: true, // نجبره يستخدم اتصال آمن
       auth:{
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
-      }
+      },
+      // ضفنا تايم أوت 10 ثواني حتى مستحيل يعلق بعد
+      connectionTimeout: 10000, 
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
     })
 
     await transporter.sendMail({
@@ -39,7 +44,6 @@ export async function POST(req: Request){
     return Response.json({success:true})
 
   } catch (error: any) {
-    // هذا السطر هو اللي راح ينقذنا ويطبع الخطأ بالسيرفر
     console.error("EMAIL ERROR:", error.message);
     return Response.json({ success: false, error: error.message }, { status: 500 })
   }
