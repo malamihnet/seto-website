@@ -2,32 +2,24 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    // نجيب كل أسماء المتغيرات اللي Railway دا يقرأها
-    const allEnvKeys = Object.keys(process.env);
-    
-    // ندور على متغيراتك
-    const token = process.env.VIMEO_TOKEN;
-    const hasEmail = allEnvKeys.includes("EMAIL_USER");
-    const hasTokenKey = allEnvKeys.includes("VIMEO_TOKEN");
+    // ركز هنا: خلينا التوكن مالتك كتابة مباشرة حتى نخلص من مشكلة Railway
+    const token = "c645c92e7888500083fda815aea9d770";
 
-    if (!token) {
-      return Response.json({ 
-        error: "Railway is hiding the variables!",
-        isVimeoKeyVisible: hasTokenKey,
-        isEmailVisible: hasEmail,
-        allVariablesFound: allEnvKeys.filter(k => k.includes("VIMEO") || k.includes("EMAIL"))
-      }, { status: 500 });
-    }
-
-    // إذا اشتغل التوكن، يكمل طبيعي
-    const res = await fetch("https://api.vimeo.com/users/setoiq/videos?per_page=100", {
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
+    const res = await fetch(
+      "https://api.vimeo.com/users/setoiq/videos?per_page=100",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        cache: "no-store",
+      }
+    );
 
     const data = await res.json();
-    
-    if (!data || !data.data) return Response.json([]);
+
+    if (!data || !data.data) {
+      return Response.json([]); 
+    }
 
     const videos = data.data.map((v: any) => ({
       id: Number(v.uri.split("/").pop()),
@@ -36,8 +28,7 @@ export async function GET() {
     }));
 
     return Response.json(videos);
-
-  } catch (error: any) {
-    return Response.json({ error: "Crash", msg: error.message }, { status: 500 });
+  } catch (error) {
+    return Response.json([], { status: 500 });
   }
 }
