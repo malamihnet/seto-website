@@ -1,14 +1,11 @@
 import WorkClient from "./WorkClient"
 import { headers } from "next/headers"
 
+// شلنا التناقض، هسه الصفحة راح تقرأ الكلاينت بشكل مباشر وصحيح
 export const dynamic = "force-dynamic"
-
-// هذا السطر يخلي الصفحة "تطير" لأنها تحفظ البيانات لمدة ساعة 
-export const revalidate = 3600 
 
 export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
   const resolvedParams = await params
-  // نمرر اللغة فقط، والـ Client هو اللي يسحب البيانات مثل ما كان كودك الأصلي
   return <WorkClient />
 }
 

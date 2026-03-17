@@ -12,7 +12,7 @@ type VimeoVideo = {
   title: string
 }
 
-// --- 1. مكون البطاقة (فقط هنا ضفت الهوفر الأصفر ورقم البروجكت) ---
+// --- 1. مكون البطاقة مع البارالاكس ---
 function WorkCard({ video, lang, idx, isArabic }: { video: VimeoVideo; lang: string; idx: number; isArabic: boolean }) {
   const cardRef = useRef(null)
   
@@ -42,12 +42,10 @@ function WorkCard({ video, lang, idx, isArabic }: { video: VimeoVideo; lang: str
             alt={`${isArabic ? "سيتو بوست برودكشن" : "Seto Post Production"} - ${video.title}`}
           />
           <div className="absolute inset-0 flex items-center justify-center">
-            {/* خليت علامة البلاي هم تصير صفرا بالهوفر لجمالية أكثر */}
             <FaPlay className="text-white text-2xl opacity-90 group-hover:scale-110 transition group-hover:text-[#e4da20]" />
           </div>
         </div>
 
-        {/* التعديل الصغير: رقم المشروع والاسم يصير أصفر بالهوفر */}
         <div className="mt-3">
           <div className="flex items-center gap-2 mb-1 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
             <span className="text-[10px] tracking-[0.2em] text-[#e4da20] font-mono">
@@ -64,7 +62,7 @@ function WorkCard({ video, lang, idx, isArabic }: { video: VimeoVideo; lang: str
   )
 }
 
-// --- 2. الكود الأساسي مالتك (ملمست بي أي شي نهائياً) ---
+// --- 2. الكود الأساسي ---
 export default function WorkClient() {
   const { lang } = useParams<{ lang: string }>()
   const isArabic = lang === "ar"
@@ -86,10 +84,19 @@ export default function WorkClient() {
       try {
         const res = await fetch("/api/vimeo")
         const data = await res.json()
-        setVideos(data)
+        
+        // حماية: إذا البيانات مصفوفة نحدث الحالة، إذا لا نتركها فارغة حتى ما يضرب الكود
+        if (Array.isArray(data)) {
+          setVideos(data)
+        } else {
+          console.error("API did not return an array:", data)
+          setVideos([])
+        }
+        
         setPageLoading(false)
       } catch (err) {
         console.error(err)
+        setVideos([])
         setPageLoading(false)
       }
     }
@@ -126,12 +133,24 @@ export default function WorkClient() {
     )
   }
 
+  // حماية من الشاشة السودة: إذا ماكو فيديوهات إعرض رسالة بدل الفراغ
+  if (!pageLoading && videos.length === 0) {
+    return (
+      <div className="h-screen w-full flex flex-col items-center justify-center bg-black px-6 text-center">
+        <p className="text-[#e4da20] text-lg font-bold uppercase tracking-widest mb-2">
+          {isArabic ? "لا توجد أعمال لعرضها حالياً" : "NO WORKS TO DISPLAY"}
+        </p>
+        <p className="text-white/50 text-xs tracking-widest uppercase">
+          {isArabic ? "يرجى التحقق من اتصال API" : "Please check API connection"}
+        </p>
+      </div>
+    )
+  }
+
   const heroVideo = videos[0]
 
   return (
     <div className="pt-5 pb-32 overflow-x-hidden bg-black">
-      
-      {/* SEO H1 */}
       <h1 className="sr-only">
         Seto's Post Production Iraq | #1 Post Production Studio in Iraq
       </h1>
