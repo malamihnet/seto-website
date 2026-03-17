@@ -1,44 +1,46 @@
-import nodemailer from "nodemailer"
+import { Resend } from 'resend';
 
-export async function POST(req: Request){
+// المفتاح الجديد والفعال
+const resend = new Resend('re_beicCDYG_BjfSDYESimzjDtaF9A3Bgq6M');
+
+export async function POST(req: Request) {
   try {
-    const data = await req.json()
+    const data = await req.json();
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false, 
-      auth:{
-        user: "info@satar.me", 
-        pass: "dqqsrqvhvbknkjix" // الباسورد الجديد مالتك
-      },
-      tls: {
-        // هاي الإضافة تضمن إن الاتصال ميفشل بسبب فروقات السيرفرات
-        rejectUnauthorized: false 
-      }
-    })
-
-    await transporter.sendMail({
-      from: `"Seto Website" <info@satar.me>`,
-      to: "info@satar.me",
-      subject: "New Project Inquiry — Seto's Post Production",
+    // إرسال الإيميل باستخدام Resend
+    const result = await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: 'info@satar.me',
+      subject: 'New Project Inquiry — Seto\'s Post Production',
       html: `
-      <div style="background:#0b0b0b;padding:40px;font-family:sans-serif;">
-        <div style="max-width:600px;margin:auto;background:#111;padding:30px;border:1px solid #333;">
-          <h1 style="color:#e4da20;">New Message</h1>
-          <p style="color:#fff"><strong>Name:</strong> ${data.name}</p>
-          <p style="color:#fff"><strong>Email:</strong> ${data.email}</p>
-          <p style="color:#fff"><strong>Project:</strong> ${data.project}</p>
-          <p style="color:#fff"><strong>Message:</strong> ${data.message}</p>
+        <div style="background:#0b0b0b; padding:40px; font-family:sans-serif; color:#fff;">
+          <div style="max-width:600px; margin:auto; background:#111; border:1px solid #333; padding:40px;">
+            <h1 style="color:#e4da20; font-size:24px; margin-bottom:20px;">SETO'S POST-PRODUCTION</h1>
+            <p style="color:#aaa; font-size:14px; margin-bottom:30px;">New project inquiry received from the website.</p>
+            
+            <div style="border-top:1px solid #333; padding-top:20px;">
+              <p style="margin-bottom:15px;"><strong>Name:</strong><br/>${data.name}</p>
+              <p style="margin-bottom:15px;"><strong>Email:</strong><br/>${data.email}</p>
+              <p style="margin-bottom:15px;"><strong>Project Type:</strong><br/>${data.project}</p>
+              <p style="margin-bottom:15px;"><strong>Message:</strong><br/>${data.message}</p>
+            </div>
+            
+            <hr style="border:none; border-top:1px solid #333; margin:30px 0;"/>
+            <p style="color:#555; font-size:12px;">Sent via Seto's Contact Form.</p>
+          </div>
         </div>
-      </div>
       `
-    })
+    });
 
-    return Response.json({success:true})
+    if (result.error) {
+      console.error("RESEND ERROR:", result.error);
+      return Response.json({ success: false, error: result.error }, { status: 500 });
+    }
+
+    return Response.json({ success: true });
 
   } catch (error: any) {
-    console.error("EMAIL ERROR:", error.message);
-    return Response.json({ success: false, error: error.message }, { status: 500 })
+    console.error("API ERROR:", error.message);
+    return Response.json({ success: false, error: error.message }, { status: 500 });
   }
 }
