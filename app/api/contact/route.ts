@@ -12,7 +12,7 @@ export async function POST(req: Request){
       auth:{
         // جرب تكتبهم هنا مباشرة للفحص
         user: "info@satar.me", 
-        pass: "اكتب_هنا_الباسورد_الـ16_حرف_بدون_فراغات" 
+        pass: "ypzxyljpvqjvjezo" 
       },
       connectionTimeout: 15000, 
     })
