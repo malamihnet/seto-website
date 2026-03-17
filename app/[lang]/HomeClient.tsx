@@ -4,6 +4,17 @@ import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { useParams } from "next/navigation"
+// استدعاء الأيقونات المطلوبة
+import { 
+  FaFilm, 
+  FaPalette, 
+  FaMagic, 
+  FaLayerGroup, 
+  FaHeadphones, 
+  FaCameraRetro, 
+  FaArrowRight, 
+  FaArrowLeft 
+} from "react-icons/fa"
 
 type VimeoVideo = {
   id:number
@@ -61,25 +72,25 @@ ctaBtn:"ابدأ مشروعك"
 
 const t = translations[currentLang]
 
-/* SERVICES */
+/* SERVICES WITH ICONS */
 
-const services =
-currentLang === "ar"
-?[
-"مونتاج الفيديو",
-"تصحيح الألوان",
-"المؤثرات البصرية (VFX)",
-"موشن جرافيك",
-"تصميم الصوت",
-"السرد السينمائي"
+// التعديل هنا: ربطنا كل خدمة بالأيقونة المناسبة إلها
+const servicesList = currentLang === "ar"
+? [
+  { text: "مونتاج الفيديو", icon: FaFilm },
+  { text: "تصحيح الألوان", icon: FaPalette },
+  { text: "المؤثرات البصرية (VFX)", icon: FaMagic },
+  { text: "موشن جرافيك", icon: FaLayerGroup },
+  { text: "تصميم الصوت", icon: FaHeadphones },
+  { text: "السرد السينمائي", icon: FaCameraRetro }
 ]
-:[
-"Video Editing",
-"Color Grading",
-"Visual Effects (VFX)",
-"Motion Graphics",
-"Sound Design",
-"Cinematic Storytelling"
+: [
+  { text: "Video Editing", icon: FaFilm },
+  { text: "Color Grading", icon: FaPalette },
+  { text: "Visual Effects (VFX)", icon: FaMagic },
+  { text: "Motion Graphics", icon: FaLayerGroup },
+  { text: "Sound Design", icon: FaHeadphones },
+  { text: "Cinematic Storytelling", icon: FaCameraRetro }
 ]
 
 /* STATES */
@@ -127,7 +138,7 @@ return(
           object-cover
           scale-150
         "
-        src="https://www.youtube.com/embed/QsS-ZfoRNDo?autoplay=1&mute=1&controls=0&start=7&end=67&loop=1&playlist=QsS-ZfoRNDo&modestbranding=1&playsinline=1"
+        src="https://www.youtube.com/embed/QsS-ZfoRNDo?autoplay=1&mute=1&controls=0&start=6&end=67&loop=1&playlist=QsS-ZfoRNDo&modestbranding=1&playsinline=1"
         allow="autoplay"
       />
 
@@ -147,7 +158,6 @@ className={`absolute top-6 ${currentLang === "ar" ? "left-6" : "right-6"} z-20 b
 
 <div className="max-w-[900px]">
 
-{/* 1. العنوان الرئيسي: يبدأ بعد 1.5 ثانية (حتى يخلص البري لود) بحركة بطيئة 1.5 ثانية */}
 <motion.h1
 initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
 animate={isMounted ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 40, filter: "blur(10px)" }}
@@ -161,7 +171,6 @@ ${currentLang === "ar"
 {t.title}
 </motion.h1>
 
-{/* 2. اسم الاستوديو: يطلع ورا العنوان الرئيسي بـ 0.8 ثانية */}
 <motion.h2
 initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
 animate={isMounted ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 30, filter: "blur(8px)" }}
@@ -171,7 +180,6 @@ className="mt-6 text-[#e4da20] font-semibold text-[20px] sm:text-[26px] md:text-
 {t.studio}
 </motion.h2>
 
-{/* 3. الوصف: يطلع ورا اسم الاستوديو بـ 0.8 ثانية */}
 <motion.p
 initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
 animate={isMounted ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 20, filter: "blur(6px)" }}
@@ -181,7 +189,6 @@ className="mt-6 text-neutral-300 text-[15px] sm:text-[17px] max-w-[420px]"
 {t.desc}
 </motion.p>
 
-{/* 4. الأزرار: تطلع أخير شي */}
 <motion.div
 initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
 animate={isMounted ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 20, filter: "blur(4px)" }}
@@ -213,43 +220,71 @@ className="border border-neutral-600 px-7 py-3 uppercase text-sm hover:border-wh
 
 {/* SERVICES */}
 
-<section className="px-6 md:px-16 py-24">
+{/* SERVICES */}
+
+{/* التعديل هنا: غيرنا py-24 إلى pt-8 pb-24 حتى نقلل السواد ونصعد السكشن ليفوك */}
+<section className="px-6 md:px-16 pt-0 pb-24">
 
 <div className="max-w-[1400px] mx-auto">
 
-<h2 className="text-3xl text-[#e4da20] uppercase mb-12">
+<motion.h2 
+initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+viewport={{ once: true, margin: "-50px" }}
+transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+className="text-3xl text-[#e4da20] uppercase mb-12"
+>
 {t.servicesTitle}
-</h2>
+</motion.h2>
 
 <div className="grid md:grid-cols-3 gap-8">
 
-{services.map((service, index) => (
+{servicesList.map((item, index) => {
+  const Icon = item.icon;
+  return(
+    <Link href={`/${currentLang}/about`} key={item.text}>
 
-<Link href={`/${currentLang}/about`} key={service}>
+      <motion.div
+      initial={{ opacity: 0, scale: 0.85 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 80, 
+        damping: 15, 
+        delay: index * 0.15 
+      }}
+      whileHover={{ scale: 1.03, backgroundColor: "rgba(228, 218, 32, 0.05)" }}
+      // غيرنا التنسيق لـ flex-col حتى تصير الأيقونة فوك والنص جواها
+      className="border border-neutral-900 p-8 h-full flex flex-col justify-center items-start transition-colors duration-300 bg-black/40 hover:border-[#e4da20] cursor-pointer group"
+      >
 
-<motion.div
-initial={{ opacity: 0, scale: 0.85 }}
-whileInView={{ opacity: 1, scale: 1 }}
-viewport={{ once: true, margin: "-50px" }}
-transition={{ 
-  type: "spring", 
-  stiffness: 80, 
-  damping: 15, 
-  delay: index * 0.1 
-}}
-whileHover={{ scale: 1.03, backgroundColor: "rgba(228, 218, 32, 0.05)" }}
-className="border border-neutral-900 p-8 h-full flex items-center transition-colors duration-300 bg-black/40 hover:border-[#e4da20] cursor-pointer group"
->
+      {/* انيميشن الأيقونة */}
+      <motion.div
+        initial={{ opacity: 0, y: 15, filter: "blur(4px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, delay: (index * 0.15) + 0.1, ease: "easeOut" }}
+      >
+        <Icon className="text-4xl text-neutral-500 group-hover:text-[#e4da20] mb-5 transition-colors duration-300" />
+      </motion.div>
 
-<h3 className="uppercase tracking-wide text-lg text-white group-hover:text-[#e4da20] transition-colors duration-300">
-{service}
-</h3>
+      {/* انيميشن النص */}
+      <motion.h3 
+      initial={{ opacity: 0, y: 15, filter: "blur(4px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.8, delay: (index * 0.15) + 0.2, ease: "easeOut" }}
+      className="uppercase tracking-wide text-lg text-white group-hover:text-[#e4da20] transition-colors duration-300"
+      >
+      {item.text}
+      </motion.h3>
 
-</motion.div>
+      </motion.div>
 
-</Link>
-
-))}
+    </Link>
+  )
+})}
 
 </div>
 
@@ -265,16 +300,34 @@ className="border border-neutral-900 p-8 h-full flex items-center transition-col
 
 <div className="flex justify-between items-center mb-14">
 
-<h2 className="text-3xl text-[#e4da20] uppercase">
+<motion.h2 
+initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+viewport={{ once: true, margin: "-50px" }}
+transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+className="text-3xl text-[#e4da20] uppercase"
+>
 {t.latestWork}
-</h2>
+</motion.h2>
 
+<motion.div
+initial={{ opacity: 0, x: 20 }}
+whileInView={{ opacity: 1, x: 0 }}
+viewport={{ once: true, margin: "-50px" }}
+transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+>
 <Link
 href={`/${currentLang}/work`}
-className="border border-neutral-700 px-6 py-3 hover:border-white transition"
+// التعديل هنا: ضفنا السهم ورتبناه كـ flex
+className="flex items-center gap-3 border border-neutral-700 px-6 py-3 hover:border-white transition group"
 >
-{t.viewAll}
+<span>{t.viewAll}</span>
+{/* يتجه السهم لليسار بالعربي، ولليمين بالانجليزي ويتحرك بالهوفر */}
+<span className={`transition-transform duration-300 ${currentLang === 'ar' ? 'group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`}>
+  {currentLang === "ar" ? <FaArrowLeft /> : <FaArrowRight />}
+</span>
 </Link>
+</motion.div>
 
 </div>
 
@@ -322,7 +375,11 @@ className="w-full h-full object-cover grayscale group-hover:grayscale-0 transiti
 
 <div className="max-w-[800px] mx-auto text-center">
 
-<h2
+<motion.h2
+initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+viewport={{ once: true, margin: "-50px" }}
+transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
 className={`text-[#e4da20] mb-8 font-bold whitespace-pre-line
 ${currentLang === "ar"
 ? "text-[42px] md:text-[52px] leading-[1.35]"
@@ -330,18 +387,31 @@ ${currentLang === "ar"
 `}
 >
 {t.ctaTitle}
-</h2>
+</motion.h2>
 
-<p className="text-neutral-400 mb-10">
+<motion.p 
+initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
+whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+viewport={{ once: true, margin: "-50px" }}
+transition={{ duration: 1.2, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+className="text-neutral-400 mb-10"
+>
 {t.ctaDesc}
-</p>
+</motion.p>
 
+<motion.div
+initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+viewport={{ once: true, margin: "-50px" }}
+transition={{ duration: 1.2, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+>
 <Link
 href={`/${currentLang}/contact`}
-className="border border-[#e4da20] px-10 py-5 text-[#e4da20] uppercase hover:bg-[#e4da20] hover:text-black transition shadow-[0_0_15px_rgba(228,218,32,0.5)]"
+className="inline-block border border-[#e4da20] px-10 py-5 text-[#e4da20] uppercase hover:bg-[#e4da20] hover:text-black transition shadow-[0_0_15px_rgba(228,218,32,0.5)]"
 >
 {t.ctaBtn}
 </Link>
+</motion.div>
 
 </div>
 
