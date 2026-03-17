@@ -88,7 +88,10 @@ const [videos,setVideos] = useState<VimeoVideo[]>([])
 const [playing,setPlaying] = useState<number | null>(null)
 const [videoEnabled,setVideoEnabled] = useState(true)
 
+const [isMounted, setIsMounted] = useState(false)
+
 useEffect(()=>{
+setIsMounted(true)
 
 fetch("https://vimeo.com/api/v2/setoiq/videos.json")
 .then(res=>res.json())
@@ -124,7 +127,7 @@ return(
           object-cover
           scale-150
         "
-        src="https://www.youtube.com/embed/QsS-ZfoRNDo?autoplay=1&mute=1&controls=0&start=6&end=67&loop=1&playlist=QsS-ZfoRNDo&modestbranding=1&playsinline=1"
+        src="https://www.youtube.com/embed/QsS-ZfoRNDo?autoplay=1&mute=1&controls=0&start=7&end=67&loop=1&playlist=QsS-ZfoRNDo&modestbranding=1&playsinline=1"
         allow="autoplay"
       />
 
@@ -144,10 +147,11 @@ className={`absolute top-6 ${currentLang === "ar" ? "left-6" : "right-6"} z-20 b
 
 <div className="max-w-[900px]">
 
+{/* 1. العنوان الرئيسي: يبدأ بعد 1.5 ثانية (حتى يخلص البري لود) بحركة بطيئة 1.5 ثانية */}
 <motion.h1
-initial={{opacity:0,y:40}}
-animate={{opacity:1,y:0}}
-transition={{duration:1}}
+initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+animate={isMounted ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 40, filter: "blur(10px)" }}
+transition={{ duration: 1.5, delay: 1.5, ease: [0.25, 0.1, 0.25, 1] }}
 className={`font-bold tracking-tight whitespace-pre-line
 ${currentLang === "ar"
 ? "leading-[1.25] text-[42px] sm:text-[60px] md:text-[78px] lg:text-[96px]"
@@ -157,28 +161,31 @@ ${currentLang === "ar"
 {t.title}
 </motion.h1>
 
+{/* 2. اسم الاستوديو: يطلع ورا العنوان الرئيسي بـ 0.8 ثانية */}
 <motion.h2
-initial={{opacity:0,y:40}}
-animate={{opacity:1,y:0}}
-transition={{delay:0.2}}
+initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+animate={isMounted ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 30, filter: "blur(8px)" }}
+transition={{ duration: 1.5, delay: 2.3, ease: [0.25, 0.1, 0.25, 1] }}
 className="mt-6 text-[#e4da20] font-semibold text-[20px] sm:text-[26px] md:text-[34px]"
 >
 {t.studio}
 </motion.h2>
 
+{/* 3. الوصف: يطلع ورا اسم الاستوديو بـ 0.8 ثانية */}
 <motion.p
-initial={{opacity:0,y:40}}
-animate={{opacity:1,y:0}}
-transition={{delay:0.4}}
+initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
+animate={isMounted ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 20, filter: "blur(6px)" }}
+transition={{ duration: 1.5, delay: 3.1, ease: [0.25, 0.1, 0.25, 1] }}
 className="mt-6 text-neutral-300 text-[15px] sm:text-[17px] max-w-[420px]"
 >
 {t.desc}
 </motion.p>
 
+{/* 4. الأزرار: تطلع أخير شي */}
 <motion.div
-initial={{opacity:0,y:30}}
-animate={{opacity:1,y:0}}
-transition={{delay:0.6}}
+initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+animate={isMounted ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 20, filter: "blur(4px)" }}
+transition={{ duration: 1.5, delay: 3.9, ease: [0.25, 0.1, 0.25, 1] }}
 className="flex gap-4 mt-10 flex-wrap"
 >
 
@@ -221,7 +228,6 @@ className="border border-neutral-600 px-7 py-3 uppercase text-sm hover:border-wh
 <Link href={`/${currentLang}/about`} key={service}>
 
 <motion.div
-// الفكرة الجديدة: زوم ناعم (Scale) يظهر من النص، بدون أي حركة عمودية تقطع الموبايل
 initial={{ opacity: 0, scale: 0.85 }}
 whileInView={{ opacity: 1, scale: 1 }}
 viewport={{ once: true, margin: "-50px" }}
@@ -231,7 +237,6 @@ transition={{
   damping: 15, 
   delay: index * 0.1 
 }}
-// تأثير هوفر جديد: يكبر شوية والباكگراوند تاخذ لمعة صفرا خفيفة
 whileHover={{ scale: 1.03, backgroundColor: "rgba(228, 218, 32, 0.05)" }}
 className="border border-neutral-900 p-8 h-full flex items-center transition-colors duration-300 bg-black/40 hover:border-[#e4da20] cursor-pointer group"
 >
