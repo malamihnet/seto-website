@@ -2,46 +2,33 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const token = process.env.VIMEO_TOKEN;
+    // نجيب كل أسماء المتغيرات اللي Railway دا يقرأها
+    const allEnvKeys = Object.keys(process.env);
     
-    // 1. نتأكد إذا التوكن أصلاً موجود بالسيرفر لو Railway مضيعه
+    // ندور على متغيراتك
+    const token = process.env.VIMEO_TOKEN;
+    const hasEmail = allEnvKeys.includes("EMAIL_USER");
+    const hasTokenKey = allEnvKeys.includes("VIMEO_TOKEN");
+
     if (!token) {
       return Response.json({ 
-        error: "CRITICAL: VIMEO_TOKEN is completely missing on Railway!" 
+        error: "Railway is hiding the variables!",
+        isVimeoKeyVisible: hasTokenKey,
+        isEmailVisible: hasEmail,
+        allVariablesFound: allEnvKeys.filter(k => k.includes("VIMEO") || k.includes("EMAIL"))
       }, { status: 500 });
     }
 
-    const res = await fetch(
-      "https://api.vimeo.com/users/setoiq/videos?per_page=100",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        cache: "no-store",
-      }
-    );
-
-    // 2. إذا فيميو رفض الطلب، راح نقرأ رسالة الرفض ونطبعها
-    if (!res.ok) {
-      const errorText = await res.text();
-      return Response.json({ 
-        error: "Vimeo blocked the request", 
-        status: res.status, 
-        details: errorText 
-      }, { status: 500 });
-    }
+    // إذا اشتغل التوكن، يكمل طبيعي
+    const res = await fetch("https://api.vimeo.com/users/setoiq/videos?per_page=100", {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
 
     const data = await res.json();
+    
+    if (!data || !data.data) return Response.json([]);
 
-    // 3. نتأكد إذا البيانات رجعت فارغة
-    if (!data || !data.data) {
-      return Response.json({ 
-        error: "Vimeo returned data, but 'data.data' is missing", 
-        fullResponse: data 
-      }, { status: 500 });
-    }
-
-    // 4. الكود الطبيعي مالتك
     const videos = data.data.map((v: any) => ({
       id: Number(v.uri.split("/").pop()),
       title: v.name,
@@ -51,10 +38,6 @@ export async function GET() {
     return Response.json(videos);
 
   } catch (error: any) {
-    // 5. إذا صار انهيارر داخلي بالسيرفر
-    return Response.json({ 
-      error: "Server crashed while fetching", 
-      message: error.message 
-    }, { status: 500 });
+    return Response.json({ error: "Crash", msg: error.message }, { status: 500 });
   }
 }
