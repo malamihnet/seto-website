@@ -51,7 +51,7 @@ export async function GET() {
     return Response.json(videos);
 
   } catch (error: any) {
-    // 5. إذا صار انهيار داخلي بالسيرفر
+    // 5. إذا صار انهيارر داخلي بالسيرفر
     return Response.json({ 
       error: "Server crashed while fetching", 
       message: error.message 
