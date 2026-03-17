@@ -216,20 +216,27 @@ className="border border-neutral-600 px-7 py-3 uppercase text-sm hover:border-wh
 
 <div className="grid md:grid-cols-3 gap-8">
 
-{services.map((service,index)=>(
+{services.map((service, index) => (
 
 <Link href={`/${currentLang}/about`} key={service}>
 
 <motion.div
-initial={{opacity:0,y:40}}
-whileInView={{opacity:1,y:0}}
-viewport={{once:true}}
-transition={{delay:index*0.1}}
-whileHover={{y:-6}}
-className="border border-neutral-900 p-8 transition bg-black/40 hover:border-[#e4da20] cursor-pointer"
+// الفكرة الجديدة: زوم ناعم (Scale) يظهر من النص، بدون أي حركة عمودية تقطع الموبايل
+initial={{ opacity: 0, scale: 0.85 }}
+whileInView={{ opacity: 1, scale: 1 }}
+viewport={{ once: true, margin: "-50px" }}
+transition={{ 
+  type: "spring", 
+  stiffness: 80, 
+  damping: 15, 
+  delay: index * 0.1 
+}}
+// تأثير هوفر جديد: يكبر شوية والباكگراوند تاخذ لمعة صفرا خفيفة
+whileHover={{ scale: 1.03, backgroundColor: "rgba(228, 218, 32, 0.05)" }}
+className="border border-neutral-900 p-8 h-full flex items-center transition-colors duration-300 bg-black/40 hover:border-[#e4da20] cursor-pointer group"
 >
 
-<h3 className="uppercase tracking-wide text-lg hover:text-[#e4da20] transition">
+<h3 className="uppercase tracking-wide text-lg text-white group-hover:text-[#e4da20] transition-colors duration-300">
 {service}
 </h3>
 
