@@ -1,82 +1,100 @@
 @import "tailwindcss";
 
-:root{
---background:#ffffff;
---foreground:#171717;
-}
-
-@media (prefers-color-scheme: dark){
-:root{
---background:#0a0a0a;
---foreground:#ededed;
-}
-}
-
-body{
-background:var(--background);
-color:var(--foreground);
-}
-
-/* ================= */
-/* FONTS */
-/* ================= */
-
-.font-en{
-  font-family: var(--font-en), sans-serif;
-}
-
-.font-ar{
-  font-family: var(--font-ar), sans-serif;
-}
-
-/* ================= */
-/* NAVBAR */
-/* ================= */
-
-.nav-link{
-position:relative;
-display:inline-block;
-color:white;
-transition:color .3s ease;
-}
-
-.nav-link:hover{
-color:#e4da20;
-}
-
-.nav-link::after{
-content:"";
-position:absolute;
-left:0;
-bottom:-6px;
-width:100%;
-height:2px;
-background:#e4da20;
-transform:scaleX(0);
-transform-origin:left;
-transition:transform .35s cubic-bezier(.4,0,.2,1);
-}
-
-.nav-link:hover::after{
-transform:scaleX(1);
-}
-
-/* LOGO */
-
-.logo{
-transition:filter .3s ease;
-}
-
-.logo-link:hover .logo{
-filter:brightness(0) saturate(100%) invert(83%) sepia(71%) saturate(550%) hue-rotate(3deg) brightness(105%) contrast(101%);
-}
-
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
+/* إعدادات البري لودر الخام */
+#global-loader {
+  position: fixed;
+  inset: 0;
   background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  gap: 40px;
 }
 
-* {
-  max-width: 100%;
+/* حركة اللوجو */
+.loader-logo {
+  width: 120px;
+  animation: pulse-fade 1.5s ease-in-out infinite;
 }
+
+/* بار التحميل */
+.loader-bar {
+  width: 150px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.loader-progress {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: #e4da20;
+  left: -100%;
+  animation: slide-progress 2s linear infinite;
+}
+
+/* إخفاء المحتوى مبدئياً */
+#page-content {
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* Animations */
+@keyframes pulse-fade {
+  0%, 100% { opacity: 0.5; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slide-progress {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* تنسيقات الخطوط */
+.font-en { font-family: var(--font-en), sans-serif; }
+.font-ar { font-family: var(--font-ar), sans-serif; }
+
+/* Navbar Links */
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+.nav-link:hover { color: #e4da20; }
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: #e4da20;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+.nav-link:hover::after { transform: scaleX(1); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #e4da20; border-radius: 10px; }
+
+html { scroll-behavior: smooth; }
