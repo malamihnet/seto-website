@@ -6,37 +6,30 @@ export async function POST(req: Request){
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 587, // غيرنا البورت لـ 587 المسموح عالمياً
-      secure: false, // لازم تصير false مع بورت 587
-      requireTLS: true, // نجبره يستخدم اتصال آمن
+      port: 587,
+      secure: false,
+      requireTLS: true,
       auth:{
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        // جرب تكتبهم هنا مباشرة للفحص
+        user: "info@satar.me", 
+        pass: "اكتب_هنا_الباسورد_الـ16_حرف_بدون_فراغات" 
       },
-      // ضفنا تايم أوت 10 ثواني حتى مستحيل يعلق بعد
-      connectionTimeout: 10000, 
-      greetingTimeout: 10000,
-      socketTimeout: 10000,
+      connectionTimeout: 15000, 
     })
 
     await transporter.sendMail({
-      from: `"Seto Website" <${process.env.EMAIL_USER}>`,
+      from: `"Seto Website" <info@satar.me>`,
       to: "info@satar.me",
       subject: "New Project Inquiry — Seto's Post Production",
       html: `
       <div style="background:#0b0b0b;padding:40px;font-family:Arial,Helvetica,sans-serif">
-      <div style="max-width:620px;margin:auto;background:#111;border:1px solid #333;padding:40px">
-      <h1 style="color:#e4da20;font-size:28px;margin-bottom:20px">SETO'S POST-PRODUCTION</h1>
-      <p style="color:#aaa;font-size:15px;margin-bottom:30px">New project inquiry received from the website.</p>
-      <div style="border-top:1px solid #333;padding-top:25px">
-      <p style="color:#fff;margin-bottom:20px"><strong>Name</strong><br/>${data.name}</p>
-      <p style="color:#fff;margin-bottom:20px"><strong>Email</strong><br/>${data.email}</p>
-      <p style="color:#fff;margin-bottom:20px"><strong>Project Type</strong><br/>${data.project}</p>
-      <p style="color:#fff;margin-bottom:20px"><strong>Message</strong><br/>${data.message}</p>
-      </div>
-      <hr style="border:none;border-top:1px solid #333;margin:30px 0"/>
-      <p style="color:#777;font-size:13px">This message was sent from the Seto's Post-Production website contact form.</p>
-      </div>
+        <div style="max-width:620px;margin:auto;background:#111;border:1px solid #333;padding:40px">
+          <h1 style="color:#e4da20;font-size:28px;margin-bottom:20px">SETO'S POST-PRODUCTION</h1>
+          <p style="color:#fff"><strong>Name:</strong> ${data.name}</p>
+          <p style="color:#fff"><strong>Email:</strong> ${data.email}</p>
+          <p style="color:#fff"><strong>Project:</strong> ${data.project}</p>
+          <p style="color:#fff"><strong>Message:</strong> ${data.message}</p>
+        </div>
       </div>
       `
     })
@@ -44,6 +37,7 @@ export async function POST(req: Request){
     return Response.json({success:true})
 
   } catch (error: any) {
+    // هذا السطر جداً مهم.. افتح الـ Logs وشوف شيكتبلك ورا كلمة ERROR
     console.error("EMAIL ERROR:", error.message);
     return Response.json({ success: false, error: error.message }, { status: 500 })
   }
